@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +44,7 @@ public class FileController {
 	
 	//削除後のUrlを作成
 	@PostMapping("/delete/{id}")
-	public String deleteFile(@RequestParam Long id,Model model) {
+	public String deleteFile(@PathVariable@RequestParam Long id,Model model) {
 		try {
 			fileService.deleteFile(id);
 			model.addAttribute("files",fileService.listFiles());
