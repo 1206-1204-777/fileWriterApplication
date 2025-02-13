@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ファイル管理</title>
+</head>
+<body>
+    <h1>ファイル管理</h1>
+    
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <label><input type="checkbox" name="overwrite"> 上書き保存</label>
+        <button type="submit">アップロード</button>
+    </form>
+
+    <h2>保存済みファイル</h2>
+    <ul>
+        <th:block th:each="file : ${files}">
+            <li>
+                <span th:text="${file.fileName}"></span>
+                <form th:action="@{/delete/{id}(id=${file.id})}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${file.id}">
+                    <button type="submit">削除</button>
+                </form>
+            </li>
+        </th:block>
+    </ul>
+</body>
+</html>
