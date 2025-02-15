@@ -3,27 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <title>ファイル管理</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: Arial, sans-serif;
+			padding-top: 1rem;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        button {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <h1>ファイル管理</h1>
     
     <form action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file" required>
-        <label><input type="checkbox" name="overwrite"> 上書き保存</label>
         <button type="submit">アップロード</button>
     </form>
 
     <h2>保存済みファイル</h2>
-    <ul>
-        <th:block th:each="file : ${files}">
-            <li>
-                <span th:text="${file.fileName}"></span>
-                <form th:action="@{/delete/{id}(id=${file.id})}" method="post" style="display:inline;">
-                    <input type="hidden" name="id" th:value="${file.id}">
-                    <button type="submit">削除</button>
-                </form>
-            </li>
-        </th:block>
-    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>ファイル名</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <th:block th:each="file : ${files}">
+                <tr>
+                    <td th:text="${file.fileName}"></td>
+                    <td>
+                        <form th:action="@{/delete/{id}(id=${file.id})}" method="post" style="display:inline;">
+                            <input type="hidden" name="id" th:value="${file.id}">
+                            <button type="submit">削除</button>
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
 </body>
 </html>
