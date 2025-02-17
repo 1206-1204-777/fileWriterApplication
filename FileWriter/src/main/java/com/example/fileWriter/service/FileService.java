@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.fileWriter.service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,8 +12,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.entity.FileEntity;
-import com.example.demo.repository.FileRepository;
+import com.example.fileWriter.entity.FileEntity;
+import com.example.fileWriter.repository.FileRepository;
 
 @Service
 public class FileService {

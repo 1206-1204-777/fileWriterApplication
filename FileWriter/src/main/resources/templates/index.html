@@ -60,6 +60,7 @@
     <table>
         <thead>
             <tr>
+				<th>ファイルID</th>
                 <th>ファイル名</th>
                 <th>操作</th>
             </tr>
@@ -67,11 +68,14 @@
         <tbody>
             <th:block th:each="file : ${files}">
                 <tr>
+					<td th:text="${file.id}"></td>
                     <td th:text="${file.fileName}"></td>
                     <td>
                         <form th:action="@{/delete/{id}(id=${file.id})}" method="post" style="display:inline;">
+							
                             <input type="hidden" name="id" th:value="${file.id}">
                             <button type="submit">削除</button>
+							
                         </form>
                     </td>
                 </tr>

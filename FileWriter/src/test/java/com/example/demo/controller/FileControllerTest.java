@@ -15,10 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 
-import com.example.demo.FileWriterApplication;
-import com.example.demo.entity.FileEntity;
-import com.example.demo.repository.FileRepository;
-import com.example.demo.service.FileService;
+import com.example.fileWriter.FileWriterApplication;
+import com.example.fileWriter.entity.FileEntity;
+import com.example.fileWriter.repository.FileRepository;
+import com.example.fileWriter.service.FileService;
 
 @AutoConfigureMockMvc
 @SpringBootTest(classes = FileWriterApplication.class)

@@ -13,8 +13,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.entity.FileEntity;
-import com.example.demo.repository.FileRepository;
+import com.example.fileWriter.entity.FileEntity;
+import com.example.fileWriter.repository.FileRepository;
+import com.example.fileWriter.service.FileService;
 
 @SpringBootTest
 class FileServiceTest {

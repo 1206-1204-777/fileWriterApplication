@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.fileWriter.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.fileWriter.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.entity.FileEntity;
-import com.example.demo.service.FileService;
+import com.example.fileWriter.entity.FileEntity;
+import com.example.fileWriter.service.FileService;
 
 @Controller
 @RequestMapping("/")
