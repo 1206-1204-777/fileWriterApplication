@@ -174,7 +174,7 @@
 		</table>
 
 		<!-- ファイル内容表示エリア -->
-		<h3 class="file-title" th:if="${fileContent}">ファイルの内容:</h3>
+		<h3 class="file-title" th:if="${fileContent}" >ファイルの内容:</h3>
 		<div th:if="${fileContent}" class="file-content">
 			<pre th:text="${fileContent}"></pre>
 		</div>
