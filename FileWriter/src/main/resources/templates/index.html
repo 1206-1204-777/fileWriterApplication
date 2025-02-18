@@ -2,168 +2,197 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ファイル管理システム</title>
-    <style>
-        /* 全体のスタイル */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ドキュメント管理システム</title>
+	<!-- Bootstrap CDN追加 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-KyZXEJfQdHzzHkS7z5fcv5NnPqcMfg6qD32mFLFsmY34g9Dg0D3eVpXr8q0kV5Q6" crossorigin="anonymous">
+	<style>
+		/* カスタムスタイルはそのまま残す */
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f8f9fa;
+			margin: 0;
+			padding: 0;
+		}
 
-        /* ヘッダー */
-        .header {
-           
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
-        }
+		.header {
+			padding: 15px;
+			text-align: center;
+			font-size: 24px;
+		}
 
-        /* メインコンテンツ */
-        .container {
-            width: 80%;
-            margin: 20px auto;
-            text-align: center;
-        }
+		.container {
+			width: 80%;
+			margin: 20px auto;
+		}
 
-        /* テーブルのデザイン */
-        table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
+		table {
+			width: 100%;
+			margin-top: 20px;
+			border-collapse: collapse;
+			background: white;
+			box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+		}
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
+		th,
+		td {
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
+		}
 
-   
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+		tr:hover {
+			background-color: #ddd;
+		}
 
-        tr:hover {
-            background-color: #ddd;
-        }
+		button,
+		.button {
+			padding: 8px 12px;
+			border: none;
+			cursor: pointer;
+			font-size: 14px;
+			border-radius: 5px;
+			text-decoration: none;
+		}
 
-        /* ボタンデザイン */
-        button, .button {
-            padding: 8px 12px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-
-        .button {
-            background-color: #28a745;
-            color: white;
-            display: inline-block;
-            margin-right: 5px;
-        }
-
-        .button:hover {
-            background-color: #218838;
-        }
-
-        button[type="submit"] {
-            background-color:#ddd;
-            color: black;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #c82333;
+		.button {
+			background-color: #28a745;
 			color: white;
-        }
+			display: inline-block;
+			margin-right: 5px;
+		}
 
-        /* ファイルアップロード */
-        .upload-section {
-            margin: 20px auto;
-            padding: 15px;
-            
-            width: 50%;
-          
-            border-radius: 10px;
-        }
+		.button:hover {
+			background-color: #218838;
+		}
 
-        /* ファイル内容表示 */
-        .file-content {
-			
-            background-color: white;
-            padding: 20px;
-           padding-left: var();
-            margin-top: 20px;
-            text-align: left;
-            width: 80%;
-            
-            margin-right: auto;
-            border-radius: 10px;
-        }
+		button[type="submit"] {
+			background-color: #ddd;
+			color: black;
+		}
 
-        .file-title {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 20px;
-        }
+		button[type="submit"]:hover {
+			background-color: #c82333;
+			color: white;
+		}
 
-    </style>
+		.upload-section {
+			margin: 20px auto;
+			padding: 15px;
+			width: 50%;
+			border-radius: 10px;
+			background-color: #fff;
+		}
+
+		.file-content {
+			background-color: white;
+			padding: 20px;
+			margin-top: 20px;
+			text-align: left;
+			width: 80%;
+			margin-right: auto;
+			border-radius: 10px;
+		}
+
+		.file-title {
+			text-align: center;
+			margin-top: 20px;
+			font-size: 20px;
+		}
+
+		#main-title {
+			opacity: 0;
+			animation: fadeIn 2s forwards;
+		}
+
+		/* ページ全体にフェードイン効果を適用 */
+		body {
+		    opacity: 0;
+		    animation: fadeIn 2s forwards;
+		}
+
+		@keyframes fadeIn {
+		    from {
+		        opacity: 0;
+		    }
+		    to {
+		        opacity: 1;
+		    }
+		}
+
+	</style>
 </head>
 
 <body>
-    <div class="container">
-		<h1><a href="/"  style="text-decoration: none; color: inherit;">ファイル管理</a></h1>
-        <!-- ファイルアップロードフォーム -->
-        <div class="upload-section">
-            <h2 th:if="${fileContent == null}">ファイルをアップロード</h2>
-            <form action="/upload" method="post" enctype="multipart/form-data" th:if="${fileContent == null}">
-                <input type="file" name="file" accept=".txt,.pdf,.docx" required>
-                <button type="submit" th:if="${fileContent == null}">アップロード</button>
-            </form>
-        </div>
+	<div class="container">
+		<h1 id="main-title" class="text-center"><a href="/" style="text-decoration: none; color: inherit;">ドキュメント管理ツール</a>
+		</h1>
 
-        <h2 th:if="${fileContent == null}">保存済みファイル</h2>
-        <table>
-            <thead th:if="${fileContent == null}">
-                <tr>
-                    <th>ID</th>
-                    <th>ファイル名</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <th:block th:each="file : ${files}">
-                    <tr>
-                        <td th:text="${file.id}"></td>
-                        <td th:text="${file.fileName}"></td>
-                        <td>
-                            <!-- ファイル内容を表示するボタン -->
-                            <a th:href="@{/view/{id}(id=${file.id})}" class="button">表示</a>
-                            <!-- ファイル削除ボタン -->
-                            <form th:action="@{/delete/{id}(id=${file.id})}" method="post" style="display:inline;">
-                                <input type="hidden" name="id" th:value="${file.id}">
-                                <button type="submit">削除</button>
-                            </form>
-                        </td>
-                    </tr>
-                </th:block>
-            </tbody>
-        </table>
+		<!-- ファイルアップロードフォーム -->
+		<div class="upload-section">
+			<h2 th:if="${fileContent == null}" class="text-center">ファイルをアップロード</h2>
+			<form action="/upload" method="post" enctype="multipart/form-data" th:if="${fileContent == null}">
+				<div class="mb-3">
+					<input type="file" name="file" accept=".txt,.pdf,.docx" required class="form-control">
+				</div>
+				<div class="text-end"> <!-- 右寄せのクラスを追加 -->
+					<button type="submit" class="btn btn-primary" th:if="${fileContent == null}">アップロード</button>
+				</div>
+			</form>
+		</div>
 
-        <!-- ファイル内容表示エリア -->
-        <h3 class="file-title" th:if="${fileContent}">ファイルの内容:</h3>
-        <div th:if="${fileContent}" class="file-content">
-            <pre th:text="${fileContent}"></pre>
-        </div>
-    </div>
+		<h2 th:if="${fileContent == null}">保存済みファイル</h2>
+		<table class="table table-bordered">
+			<thead th:if="${fileContent == null}">
+				<tr>
+					<th>ID</th>
+					<th>ファイル名</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="file : ${files}">
+					<tr>
+						<td th:text="${file.id}"></td>
+						<td th:text="${file.fileName}"></td>
+						<td>
+							<a th:href="@{/view/{id}(id=${file.id})}" class="btn btn-success">表示</a>
+							<form th:action="@{/delete/{id}(id=${file.id})}" method="post" style="display:inline;">
+								<input type="hidden" name="id" th:value="${file.id}">
+								<button type="submit" class="btn btn-danger">削除</button>
+							</form>
+						</td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+
+		<!-- ファイル内容表示エリア -->
+		<h3 class="file-title" th:if="${fileContent}">ファイルの内容:</h3>
+		<div th:if="${fileContent}" class="file-content">
+			<pre th:text="${fileContent}"></pre>
+		</div>
+	</div>
+
+	<!-- BootstrapのJSとPopper.jsの追加 -->
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+		integrity="sha384-oBqDVmMz4fnFO9gybB2hD3r7bfc7iq2d0Kr7JzD1arpmkz0V8YpF0M9WPT6i2w5h3"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+		integrity="sha384-pzjw8f+ua7Kw1TIq0v8Fqg6B6Dyykkv3tGOSdSu3oYlPvX5ffZ78D+49SKEX7v1T"
+		crossorigin="anonymous"></script>
+	<script>
+		window.onload = function () {
+			const title = document.getElementById("main-title");
+			title.style.animation = "fadeIn 2s forwards";
+		};
+	</script>
 
 </body>
 
