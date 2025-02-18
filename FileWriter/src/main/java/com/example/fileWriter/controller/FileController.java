@@ -1,16 +1,11 @@
 package com.example.fileWriter.controller;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +20,7 @@ import com.example.fileWriter.repository.FileRepository;
 import com.example.fileWriter.service.FileService;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping
 public class FileController {
 	private final FileService fileService;
 	private final FileRepository fileRepository;
@@ -35,7 +30,7 @@ public class FileController {
 		this.fileRepository = fileRepository;
 	}
 	//index.htmlを表示
-	@GetMapping
+	@GetMapping("/")
 	public String listFiles(Model model) {
 		List<FileEntity> files = fileService.listFiles();
 		model.addAttribute("files",files);
@@ -52,32 +47,19 @@ public class FileController {
 		}
 		return "redirect:/";
 	}
-	
-	//*ファイルを取得するメソッド
+
+	//ファイルの中身をUTF－8で表示
 	@GetMapping("/view/{id}")
-    public ResponseEntity<UrlResource> viewFile(@PathVariable Long id) throws IOException {
-        // ID に対応するファイル情報を取得
-        Optional<FileEntity> optionalFile = fileRepository.findById(id);
-        if (!optionalFile.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-
-        FileEntity fileEntity = optionalFile.get();
-        Path filePath = Paths.get(fileEntity.getFilePath());
-
-        // ファイルが実際に存在するかチェック
-        if (!Files.exists(filePath)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-
-        // ファイルを Resource に変換
-        UrlResource resource = new UrlResource(filePath.toUri());
-
-        // 適切なレスポンスヘッダーを設定
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileEntity.getFileName() + "\"")
-                .body(resource);
-		
+	public String viewFile(@PathVariable Long id,Model model) throws IOException{
+		//ファイルidを取得
+		Optional<FileEntity> files = fileRepository.findById(id);
+		//ファイルパスを取得
+		FileEntity fileEntity = files.get();
+		Path filePath = Paths.get(fileEntity.getFilePath());
+		//ファイルの読み込み
+		String fileContent = fileService.readFile(filePath);
+		model.addAttribute("fileContent",fileContent);
+		return "index";
 	}
 	
 	//削除後のUrlを作成

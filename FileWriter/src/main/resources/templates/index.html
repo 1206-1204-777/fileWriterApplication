@@ -1,84 +1,170 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ファイル管理</title>
+    <title>ファイル管理システム</title>
     <style>
+        /* 全体のスタイル */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ヘッダー */
+        .header {
+           
+            padding: 15px;
             text-align: center;
-            margin-top: 100px;
+            font-size: 24px;
         }
+
+        /* メインコンテンツ */
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        /* テーブルのデザイン */
         table {
-            width: 60%;
-            margin: auto;
+            width: 100%;
+            margin-top: 20px;
             border-collapse: collapse;
+            background: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
         }
-        th {
+
+   
+
+        tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        button {
-            padding: 5px 10px;
-            margin: 2px;
+
+        tr:hover {
+            background-color: #ddd;
         }
-        iframe {
-            width: 80%;
-            height: 500px;
+
+        /* ボタンデザイン */
+        button, .button {
+            padding: 8px 12px;
             border: none;
-            margin-top: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            text-decoration: none;
         }
+
+        .button {
+            background-color: #28a745;
+            color: white;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .button:hover {
+            background-color: #218838;
+        }
+
+        button[type="submit"] {
+            background-color:#ddd;
+            color: black;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #c82333;
+			color: white;
+        }
+
+        /* ファイルアップロード */
+        .upload-section {
+            margin: 20px auto;
+            padding: 15px;
+            
+            width: 50%;
+          
+            border-radius: 10px;
+        }
+
+        /* ファイル内容表示 */
+        .file-content {
+			
+            background-color: white;
+            padding: 20px;
+           padding-left: var();
+            margin-top: 20px;
+            text-align: left;
+            width: 80%;
+            
+            margin-right: auto;
+            border-radius: 10px;
+        }
+
+        .file-title {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
     </style>
 </head>
+
 <body>
-    <h1>ファイル管理</h1>
-    
-    <!-- ファイルアップロードフォーム -->
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".txt,.pdf,.docx" required>
-        <button type="submit">アップロード</button>
-    </form>
+    <div class="container">
+		<h1><a href="/"  style="text-decoration: none; color: inherit;">ファイル管理</a></h1>
+        <!-- ファイルアップロードフォーム -->
+        <div class="upload-section">
+            <h2 th:if="${fileContent == null}">ファイルをアップロード</h2>
+            <form action="/upload" method="post" enctype="multipart/form-data" th:if="${fileContent == null}">
+                <input type="file" name="file" accept=".txt,.pdf,.docx" required>
+                <button type="submit" th:if="${fileContent == null}">アップロード</button>
+            </form>
+        </div>
 
-    <h2>保存済みファイル</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>ファイル名</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <th:block th:each="file : ${files}">
+        <h2 th:if="${fileContent == null}">保存済みファイル</h2>
+        <table>
+            <thead th:if="${fileContent == null}">
                 <tr>
-                    <td th:text="${file.id}"></td>
-                    <td th:text="${file.fileName}"></td>
-                    <td>
-                        <!-- ファイルを表示するボタン -->
-                        <button type="button" th:attr="onclick='viewFile(\'' + ${file.id} + '\')'">表示</button>
-                        <!-- ファイル削除ボタン -->
-                        <form th:action="@{/delete/{id}(id=${file.id})}" method="post" style="display:inline;">
-                            <input type="hidden" name="id" th:value="${file.id}">
-                            <button type="submit">削除</button>
-                        </form>
-                    </td>
+                    <th>ID</th>
+                    <th>ファイル名</th>
+                    <th>操作</th>
                 </tr>
-            </th:block>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <th:block th:each="file : ${files}">
+                    <tr>
+                        <td th:text="${file.id}"></td>
+                        <td th:text="${file.fileName}"></td>
+                        <td>
+                            <!-- ファイル内容を表示するボタン -->
+                            <a th:href="@{/view/{id}(id=${file.id})}" class="button">表示</a>
+                            <!-- ファイル削除ボタン -->
+                            <form th:action="@{/delete/{id}(id=${file.id})}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${file.id}">
+                                <button type="submit">削除</button>
+                            </form>
+                        </td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
 
-    <!-- ファイル表示エリア -->
-    <iframe id="fileViewer"></iframe>
+        <!-- ファイル内容表示エリア -->
+        <h3 class="file-title" th:if="${fileContent}">ファイルの内容:</h3>
+        <div th:if="${fileContent}" class="file-content">
+            <pre th:text="${fileContent}"></pre>
+        </div>
+    </div>
 
-    <script>
-        function viewFile(fileId) {
-            document.getElementById("fileViewer").src = "/view/" + fileId;
-        }
-    </script>
 </body>
+
 </html>

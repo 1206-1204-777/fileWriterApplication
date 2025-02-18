@@ -1,6 +1,7 @@
 package com.example.fileWriter.service;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -63,6 +64,10 @@ public class FileService {
 			Files.deleteIfExists(filePath);
 			fileRepository.deleteById(id);
 		}
+	}
+	//ファイルを読み込みテキスト形式にして返す
+	public String readFile(Path filePath)throws IOException{
+		return Files.readString(filePath,StandardCharsets.UTF_8);
 	}
 	
 	
