@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.Writer.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
